@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 public class CrimeFragment extends Fragment
@@ -16,6 +18,7 @@ public class CrimeFragment extends Fragment
     private Crime mCrime;
     private Button mDateButton;
     private EditText mTitleField;
+    private CheckBox mSolvedCheckBox;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -33,7 +36,12 @@ public class CrimeFragment extends Fragment
         mTitleField = (EditText) view.findViewById(R.id.crime_title);
         mTitleField.addTextChangedListener(getTitleFieldTextWatcher());
 
-        mDateButton = buildDateButton();
+        mDateButton = (Button) view.findViewById(R.id.crime_date);
+        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setEnabled(false);
+
+        mSolvedCheckBox = (CheckBox) view.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setOnCheckedChangeListener(getOnCheckedChangeListener());
 
         return view;
     }
@@ -60,8 +68,15 @@ public class CrimeFragment extends Fragment
         };
     }
 
-    private Button buildDateButton()
+    private CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener()
     {
-
+        return new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mCrime.setSolved(isChecked);
+            }
+        };
     }
 }
