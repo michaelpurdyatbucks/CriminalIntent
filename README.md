@@ -5,4 +5,4 @@
 
 
 ### Status - 
-Currently on page 148.
+Chapter 7 done - onto 8
