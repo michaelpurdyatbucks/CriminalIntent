@@ -9,6 +9,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class CrimeListFragment extends Fragment
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new CrimeHolder(layoutInflater, parent);
+            return new CrimeHolder(layoutInflater, viewType, parent);
         }
 
         @Override
@@ -72,6 +73,19 @@ public class CrimeListFragment extends Fragment
         {
             return mCrimes.size();
         }
+
+        @Override
+        public int getItemViewType(int position)
+        {
+            if (mCrimes.get(position).isRequiresPolice())
+            {
+                return R.layout.list_item_serious_crime;
+            }
+            else
+            {
+                return R.layout.list_item_crime;
+            }
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -79,14 +93,16 @@ public class CrimeListFragment extends Fragment
         private Crime mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private Button mContactPoliceButton;
 
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent)
+        public CrimeHolder(LayoutInflater inflater,int viewType, ViewGroup parent)
         {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+            super(inflater.inflate(viewType, parent, false));
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            mContactPoliceButton = (Button) itemView.findViewById(R.id.serious_crime_button);
         }
 
         public void bind(Crime crime)
@@ -94,6 +110,10 @@ public class CrimeListFragment extends Fragment
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
+            if (mCrime.isRequiresPolice())
+            {
+                mContactPoliceButton.setText("Contact Police for " + mCrime.getTitle());
+            }
         }
 
         @Override
