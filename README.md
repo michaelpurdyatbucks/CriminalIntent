@@ -5,4 +5,5 @@
 
 
 ### Status - 
-Chapter 7 done - onto 8
+* Chapter 7 - Done
+* Chapter 8 - Done
